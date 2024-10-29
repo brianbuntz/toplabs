@@ -8,11 +8,15 @@
   --text-new: #e5e7eb;
 }
 
+/* Suppress Next.js Image warnings in development */
+img[data-debug-next-image-status] {
+  display: none;
+}
+
 body {
   @apply bg-background-new text-text-new font-sans;
 }
 
-/* Optional: Add a class for the new color scheme */
 .new-theme {
   @apply bg-background-new text-text-new;
 }
@@ -31,5 +35,3 @@ a {
 * {
   box-sizing: border-box;
 }
-
-/* Additional global styles can be added here */

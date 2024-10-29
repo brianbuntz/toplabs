@@ -1,4 +1,5 @@
 // pages/index.tsx
+
 import React from "react";
 import CategoryCard from "../components/CategoryCard";
 import topLabsData from "../data/topLabsNew.json";
@@ -20,11 +21,12 @@ const Home: React.FC = () => {
           Explore Labs by Domain
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <CategoryCard
               key={category.id}
               category={category}
               getOrganization={getOrganization}
+              priority={index < 3} // Ensure first 3 images are not lazy-loaded
             />
           ))}
         </div>

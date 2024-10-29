@@ -19,16 +19,22 @@ export interface BaseProperties {
   website: string;
   standardized_name: string;
   aliases: string[];
+  logoUrl?: string; // Added logoUrl as optional property
+  description?: string;
+  shortName?: string;
+  sector?: string;
 }
 
 export interface CompanyProperties extends BaseProperties {
   entityType: "Company";
+  headquarters?: boolean;
 }
 
 export interface SubsidiaryProperties extends BaseProperties {
   entityType: "Subsidiary";
   parentCompanyId: string;
   locationStatus?: "Known" | "Unknown";
+  relationshipType?: string;
 }
 
 export interface MapFeature<T extends BaseProperties> {
@@ -50,6 +56,8 @@ export interface Relationship {
   type: string;
   label: string;
   id: string;
+  source?: string;
+  target?: string;
 }
 
 export type ExtractCompanies = MapData["features"][number] extends infer T
@@ -64,7 +72,7 @@ export type ExtractSubsidiaries = MapData["features"][number] extends infer T
     : never
   : never;
 
-// Additional types from the main types file that are map-related
+// Location related types
 export interface GeoCoordinates {
   lat: number;
   lng: number;
@@ -76,4 +84,13 @@ export interface Location {
   admin2?: string;
   city?: string;
   state?: string;
+  coordinates?: GeoCoordinates;
+}
+
+// Additional helper types
+export interface MapBounds {
+  north: number;
+  south: number;
+  east: number;
+  west: number;
 }

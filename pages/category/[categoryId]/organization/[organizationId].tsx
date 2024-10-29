@@ -1,5 +1,4 @@
 // pages/category/[categoryId]/organization/[organizationId].tsx
-
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -155,14 +154,6 @@ const OrganizationPage: React.FC = () => {
     return null;
   }
 
-  /**
-   * Enhanced prepareChartData Function
-   *
-   * @param data - Record of year to count (number or null)
-   * @param startYear - Optional start year for the chart
-   * @param endYear - Optional end year for the chart
-   * @returns Array of { year: number, count: number } or null if all counts are zero
-   */
   const prepareChartData = (
     data: Record<string, number | null> | undefined | null,
     startYear?: number,
@@ -170,33 +161,27 @@ const OrganizationPage: React.FC = () => {
   ): { year: number; count: number }[] | null => {
     if (!data) return null;
 
-    // Convert data entries, treating null or undefined counts as 0
     const entries = Object.entries(data).map(([year, count]) => [
       parseInt(year, 10),
       count ?? 0,
     ]);
 
-    // Determine the range of years
     const years = entries.map(([year]) => year);
     const definedStartYear = startYear || Math.min(...years);
     const definedEndYear = endYear || Math.max(...years);
 
-    // Generate all years within the range
     const allYears = Array.from(
       { length: definedEndYear - definedStartYear + 1 },
       (_, i) => definedStartYear + i,
     );
 
-    // Create complete entries ensuring all years are represented
     const completeEntries = allYears.map((year) => {
       const entry = entries.find(([y]) => y === year);
       return { year, count: entry ? entry[1] : 0 };
     });
 
-    // Sort entries by year
     completeEntries.sort((a, b) => a.year - b.year);
 
-    // Return null if all counts are zero
     if (completeEntries.every((entry) => entry.count === 0)) {
       return null;
     }
@@ -204,11 +189,9 @@ const OrganizationPage: React.FC = () => {
     return completeEntries;
   };
 
-  // Define the range of years for the charts (optional)
   const chartStartYear = 2019;
-  const chartEndYear = new Date().getFullYear(); // e.g., 2024
+  const chartEndYear = new Date().getFullYear();
 
-  // Prepare chart data with null handling and complete year range
   const publicationsData = prepareChartData(
     organization.stats?.publications?.papersPerYear,
     chartStartYear,
@@ -331,17 +314,19 @@ const OrganizationPage: React.FC = () => {
       )}
 
       <div className="container mx-auto px-4 py-8">
-        {/* Hero Section */}
         <div className="bg-gray-800 shadow-md rounded-lg p-8 mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            {/* Handle heroImage safely */}
             {organization.heroImage && (
-              <div className="flex justify-center lg:justify-start">
+              <div className="relative w-[500px] h-[300px]">
                 <Image
                   src={organization.heroImage.url}
-                  alt={organization.heroImage.altText}
+                  alt={organization.heroImage.altText || organization.name}
                   width={500}
-                  height={400}
-                  className="rounded-lg object-cover w-[500px] h-[300px] max-w-full max-h-full"
+                  height={300}
+                  priority
+                  className="rounded-lg object-cover"
+                  style={{ maxWidth: "100%", height: "auto" }}
                 />
               </div>
             )}
@@ -354,7 +339,6 @@ const OrganizationPage: React.FC = () => {
           </div>
         </div>
 
-        {/* InfoItem Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <InfoItem
             Icon={Clock}
@@ -373,7 +357,6 @@ const OrganizationPage: React.FC = () => {
           />
         </div>
 
-        {/* Featured Content */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Overview</h2>
           <div className="space-y-8">
@@ -397,7 +380,6 @@ const OrganizationPage: React.FC = () => {
                 </div>
               )}
 
-            {/* Research Areas */}
             {organization.researchAreas &&
               organization.researchAreas.length > 0 && (
                 <div className="mb-8">
@@ -418,22 +400,18 @@ const OrganizationPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Awards and Charts Section */}
         <div className="grid gap-8 mb-8">
-          {/* R&D 100 Awards Section */}
           {mergedAwards.length > 0 && (
             <Card title="R&D 100 Awards">
               <AwardsExplorer awards={mergedAwards} key={organization.id} />
             </Card>
           )}
 
-          {/* Charts Grid */}
           <div
             className={`grid gap-8 ${
               mergedAwards.length > 0 ? "lg:grid-cols-2" : "lg:grid-cols-1"
             }`}
           >
-            {/* Publications Chart */}
             {publicationsData && publicationsData.length > 0 && (
               <Card title="Publications per Year">
                 <div className="h-64 w-full">
@@ -454,7 +432,6 @@ const OrganizationPage: React.FC = () => {
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
-                {/* Publications Note */}
                 {organization.stats?.publications?.notes && (
                   <p className="text-gray-500 text-sm mt-2">
                     {organization.stats.publications.notes}
@@ -463,7 +440,6 @@ const OrganizationPage: React.FC = () => {
               </Card>
             )}
 
-            {/* Patents Chart */}
             {patentsData && patentsData.length > 0 && (
               <Card title="Patents per Year">
                 <div className="h-64 w-full">
@@ -484,7 +460,6 @@ const OrganizationPage: React.FC = () => {
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
-                {/* Patents Note */}
                 {organization.stats?.patents?.notes && (
                   <p className="text-gray-500 text-sm mt-2">
                     {organization.stats.patents.notes}
@@ -495,16 +470,13 @@ const OrganizationPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Map and Related Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Location on Map */}
           {currentCompany && (
             <Card title="Location on Map">
               <div className="h-96 w-full">{renderMap()}</div>
             </Card>
           )}
 
-          {/* Related Content */}
           {organization.relatedContent &&
             organization.relatedContent.length > 0 && (
               <Card title="Related Content">
@@ -519,7 +491,6 @@ const OrganizationPage: React.FC = () => {
             )}
         </div>
 
-        {/* Explore More Labs */}
         {nextOrganization && (
           <Card title="Explore More Labs">
             <div className="flex justify-center">

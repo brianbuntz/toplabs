@@ -1,6 +1,16 @@
 // types/index.ts
+import { HeroImage, ProjectImage, RelatedContent, WebpImages } from "./images";
 
 export type YesNo = "y" | "n";
+
+export interface FeaturedContent {
+  id: string;
+  type: "lab" | "project";
+  title: string;
+  description: string;
+  images?: ProjectImage[];
+  labLeader?: string;
+}
 
 export interface TopLabsData {
   researchCategories: ResearchCategory[];
@@ -73,12 +83,6 @@ export interface Project {
   title: string;
   description: string;
   images: ProjectImage[];
-}
-
-export interface ProjectImage {
-  url: string;
-  caption: string;
-  alt?: string; // Add this line
 }
 
 export interface RD100Award {
@@ -156,19 +160,6 @@ export interface Patents {
   notes: string;
 }
 
-export interface HeroImage {
-  url: string;
-  altText: string;
-  webp: WebpImages;
-  sizes: string;
-}
-
-export interface WebpImages {
-  "1000w": string;
-  "800w": string;
-  "400w": string;
-}
-
 export interface GeoCoordinates {
   lat: number;
   lng: number;
@@ -178,14 +169,6 @@ export interface Recognition {
   name: string;
   description: string;
   type: string;
-}
-
-export interface RelatedContent {
-  headline: string;
-  url: string;
-  imageUrl: string;
-  title?: string;
-  type?: string;
 }
 
 export interface Location {
@@ -221,15 +204,6 @@ export interface KeyTechnology {
   name: string;
   description: string;
   imageUrl?: string;
-}
-
-export interface FeaturedContent {
-  id: string;
-  type: "lab" | "project";
-  title: string;
-  description: string;
-  images?: ProjectImage[]; // Make this optional
-  labLeader?: string;
 }
 
 export interface ImportedTopLabsData {

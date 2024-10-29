@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { FeaturedContent, ProjectImage } from "../types";
+import { FeaturedContent } from "../types";
+import { ProjectImage } from "../types/images";
 
 interface FeaturedContentSlideshowProps {
   content: FeaturedContent[];
@@ -54,9 +55,10 @@ const FeaturedContentSlideshow: React.FC<FeaturedContentSlideshowProps> = ({
               currentContent.title ||
               "Featured content image"
             }
-            layout="fill"
-            objectFit="cover"
-            className="rounded-lg"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="rounded-lg object-cover"
+            priority={currentIndex === 0}
           />
           {content.length > 1 && (
             <>

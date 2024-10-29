@@ -1,7 +1,7 @@
 // components/OrganizationCard.tsx
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import OptimizedImage from "./OptimizedImage";
 import { Organization } from "../types";
 import classNames from "classnames";
 
@@ -26,29 +26,42 @@ const OrganizationCard: React.FC<OrganizationCardProps> = ({
     },
   );
 
+  const imageHeight = featured ? "500px" : isSmall ? "160px" : "224px"; // h-40 = 160px, h-56 = 224px
+
   const renderImage = () => {
     if (organization.heroImage && organization.heroImage.webp) {
       return (
-        <picture>
-          <source
-            type="image/webp"
-            srcSet={`${organization.heroImage.webp["400w"] || ""} 400w, ${organization.heroImage.webp["800w"] || ""} 800w, ${organization.heroImage.webp["1000w"] || ""} 1000w`}
-            sizes={organization.heroImage.sizes}
-          />
-          <Image
-            src={organization.heroImage.url}
-            alt={organization.heroImage.altText}
-            fill
-            style={{ objectFit: "cover" }}
-            className="transition-opacity duration-300 group-hover:opacity-90"
-            priority={featured}
-            loading={featured ? "eager" : "lazy"}
-          />
-        </picture>
+        <div className="relative" style={{ height: imageHeight }}>
+          <picture className="relative block h-full">
+            <source
+              type="image/webp"
+              srcSet={`${organization.heroImage.webp["400w"] || ""} 400w, ${
+                organization.heroImage.webp["800w"] || ""
+              } 800w, ${organization.heroImage.webp["1000w"] || ""} 1000w`}
+              sizes={
+                organization.heroImage.sizes ||
+                "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              }
+            />
+            <div className="relative w-full h-full">
+              <OptimizedImage
+                src={organization.heroImage.url}
+                alt={organization.heroImage.altText}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="transition-opacity duration-300 group-hover:opacity-90 object-cover"
+                priority={featured}
+              />
+            </div>
+          </picture>
+        </div>
       );
     } else {
       return (
-        <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+        <div
+          className="bg-gray-700 flex items-center justify-center"
+          style={{ height: imageHeight }}
+        >
           <span className="text-gray-400 text-sm">No Image</span>
         </div>
       );
@@ -60,23 +73,15 @@ const OrganizationCard: React.FC<OrganizationCardProps> = ({
       href={`/category/${categoryId}/organization/${organization.id}`}
       className={cardClasses}
     >
-      <div
-        className={`
-          relative 
-          ${featured ? "h-[500px]" : isSmall ? "h-40" : "h-56"} 
-          bg-gray-800 
-          overflow-hidden
-        `}
-      >
+      <div className="relative bg-gray-800 overflow-hidden">
         {renderImage()}
-        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-70"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-70" />
         <div className="absolute bottom-0 left-0 right-0 p-3">
           <h3
-            className={`
-              font-semibold text-white 
-              ${isSmall ? "text-sm" : "text-base"} 
-              line-clamp-2
-            `}
+            className={classNames("font-semibold text-white line-clamp-2", {
+              "text-sm": isSmall,
+              "text-base": !isSmall,
+            })}
           >
             {organization.name}
           </h3>

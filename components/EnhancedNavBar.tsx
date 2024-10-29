@@ -1,8 +1,7 @@
 // components/EnhancedNavBar.tsx
-
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import OptimizedImage from "./OptimizedImage";
 import { ChevronLeft, Menu, X, Microscope } from "lucide-react";
 
 interface BreadcrumbItem {
@@ -21,6 +20,32 @@ const EnhancedNavBar: React.FC<EnhancedNavBarProps> = ({ items, imageSrc }) => {
 
   const backToCategoriesHref = "/category";
 
+  const renderImage = () => {
+    if (imageSrc && !hasError) {
+      return (
+        <div className="relative w-14 h-14 rounded-full overflow-hidden">
+          <OptimizedImage
+            src={imageSrc}
+            alt="Category Image"
+            fill
+            sizes="56px"
+            className="rounded-full border-2 border-gray-600 object-cover"
+            onError={() => setHasError(true)}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div className="w-14 h-14 flex items-center justify-center bg-gray-600 rounded-full">
+        <Microscope
+          className="text-gray-300 w-8 h-8"
+          aria-label="Science Icon"
+        />
+      </div>
+    );
+  };
+
   return (
     <header className="mb-6">
       <div className="bg-gradient-to-r from-gray-800 to-gray-700 text-gray-100 shadow-lg">
@@ -28,23 +53,7 @@ const EnhancedNavBar: React.FC<EnhancedNavBarProps> = ({ items, imageSrc }) => {
           {/* Left Section: Image/Icon and Navigation */}
           <div className="flex items-center">
             {/* Category Image or Default Icon */}
-            <div className="relative w-14 h-14 mr-4 flex items-center justify-center bg-gray-600 rounded-full">
-              {imageSrc && !hasError ? (
-                <Image
-                  src={imageSrc}
-                  alt="Category Image"
-                  width={56}
-                  height={56}
-                  className="rounded-full border-2 border-gray-600"
-                  onError={() => setHasError(true)}
-                />
-              ) : (
-                <Microscope
-                  className="text-gray-300 w-8 h-8"
-                  aria-label="Science Icon"
-                />
-              )}
-            </div>
+            <div className="mr-4">{renderImage()}</div>
 
             {/* Navigation Links (Desktop) */}
             <div className="hidden md:flex flex-col md:flex-row md:items-center">

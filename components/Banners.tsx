@@ -1,37 +1,35 @@
-// components/Banners.tsx
 import React from "react";
 import Image from "next/image";
 
-const LogoBanner: React.FC = () => (
-  <div className="logo-banner w-full mb-4 flex justify-center">
-    <div className="w-full max-w-[600px]">
+const LogoBanner = () => (
+  <div className="logo-banner mb-4 flex justify-center">
+    <div style={{ position: "relative", width: "1200px", height: "150px" }}>
       <Image
         src="https://www.rdworldonline.com/wp-content/uploads/2024/09/RD_world_top_labs-scaled.gif"
         alt="RD World Top Labs"
-        width={600}
-        height={75}
-        className="w-full h-auto"
+        fill
+        style={{ objectFit: "contain" }}
+        priority
       />
     </div>
   </div>
 );
 
-const AdBanner: React.FC = () => (
-  <div className="ad-banner w-full mb-4 flex justify-center">
-    <div className="w-full max-w-[800px]">
+const AdBanner = () => (
+  <div className="ad-banner mb-4 flex justify-center">
+    <div style={{ position: "relative", width: "800px", height: "100px" }}>
       <Image
         src="/banner_ad.gif"
         alt="Banner Ad"
-        width={800}
-        height={100}
-        className="w-full h-auto rounded"
+        fill
+        style={{ objectFit: "contain" }}
       />
     </div>
   </div>
 );
 
-const Banners: React.FC = () => (
-  <div className="banners-container w-full max-w-[1000px] mx-auto">
+const Banners = () => (
+  <div className="banners-container mx-auto">
     <LogoBanner />
     <AdBanner />
   </div>

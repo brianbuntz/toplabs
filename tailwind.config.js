@@ -21,29 +21,36 @@ module.exports = {
           ...require("tailwindcss/colors").gray,
           850: "#1a1a1a",
         },
-        // New color additions
         "primary-new": {
-          light: "#3B82F6", // Tailwind blue-500
-          DEFAULT: "#1D4ED8", // Tailwind blue-700
-          dark: "#1E40AF", // Tailwind blue-800
+          light: "#3B82F6",
+          DEFAULT: "#1D4ED8",
+          dark: "#1E40AF",
         },
         "secondary-new": {
-          light: "#8B5CF6", // Tailwind purple-500
-          DEFAULT: "#6D28D9", // Tailwind purple-700
-          dark: "#5B21B6", // Tailwind purple-800
+          light: "#8B5CF6",
+          DEFAULT: "#6D28D9",
+          dark: "#5B21B6",
         },
         "green-new": {
-          light: "#10B981", // Tailwind green-500
-          DEFAULT: "#059669", // Tailwind green-600
-          dark: "#047857", // Tailwind green-700
+          light: "#10B981",
+          DEFAULT: "#059669",
+          dark: "#047857",
         },
-        "background-new": "#121212", // New dark background
-        "text-new": "#E5E7EB", // New light text
+        "background-new": "#121212",
+        "text-new": "#E5E7EB",
       },
       height: {
         108: "27rem",
         120: "30rem",
         144: "36rem",
+      },
+      // Add the new aspects
+      aspectRatio: {
+        "4/3": "4 / 3",
+      },
+      transitionProperty: {
+        opacity: "opacity",
+        transform: "transform",
       },
       typography: (theme) => ({
         DEFAULT: {
@@ -83,8 +90,14 @@ module.exports = {
       }),
     },
   },
+  variants: {
+    extend: {
+      opacity: ["group-hover"],
+      transform: ["group-hover"],
+    },
+  },
   plugins: [
     require("@tailwindcss/typography"),
-    require("@tailwindcss/aspect-ratio"), // Added aspect-ratio plugin
+    require("@tailwindcss/aspect-ratio"),
   ],
 };

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
+// Ensure you have the OptimizedImage component available
+import OptimizedImage from "./OptimizedImage"; // Adjust the path as needed
 
 interface RelatedContent {
   headline: string;
@@ -33,17 +34,17 @@ const RelatedContentSlideshow: React.FC<RelatedContentSlideshowProps> = ({
 
   return (
     <div className="relative w-full">
-      <div className="aspect-w-16 aspect-h-9 mb-4">
+      <div className="relative aspect-w-16 aspect-h-9 mb-4">
         {currentItem.imageUrl ? (
-          <Image
+          <OptimizedImage
             src={currentItem.imageUrl}
             alt={currentItem.headline}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-lg"
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover rounded-lg"
           />
         ) : (
-          <div className="bg-gray-300 rounded-lg flex items-center justify-center">
+          <div className="bg-gray-300 rounded-lg flex items-center justify-center h-full">
             <span className="text-gray-600">No image available</span>
           </div>
         )}
@@ -61,14 +62,14 @@ const RelatedContentSlideshow: React.FC<RelatedContentSlideshowProps> = ({
         <>
           <button
             onClick={prevSlide}
-            className="absolute left-2 top-1/3 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full"
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full"
             aria-label="Previous Related Content"
           >
             <ChevronLeft size={24} />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-2 top-1/3 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full"
             aria-label="Next Related Content"
           >
             <ChevronRight size={24} />
